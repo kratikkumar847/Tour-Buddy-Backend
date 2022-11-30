@@ -3,7 +3,7 @@
  */
 
  const User = require("../models/user.model");
- const response = require("../utils/resonse");
+ const response = require("../utils/response");
 
  signupMiddleware = async (req,res, next) =>{
      //Validate if userName exists
@@ -15,7 +15,7 @@
      }
  
      //Validate if the userId exists
-     if(!req.body.userId){
+     if(!req.body.userID){
          return res.status(400).send(
             "UserID is not provided"
          )
@@ -24,7 +24,7 @@
     /**
     * Valiate if the userID is already not preset
     */
-     const user = await User.findOne({userId : req.body.userId});
+     const user = await User.findOne({userID : req.body.userID});
      if(user != null){
          return res.status(400).send( "UserID already exists" )
      }

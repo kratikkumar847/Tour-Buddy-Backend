@@ -8,7 +8,7 @@ const   middleware = require("../middlewares/signupMiddleware");
 router.post("/auth/signup" ,[ middleware.signupMiddleware ], authController.signup );
 
 /** signin - POST  */
-router.get("/auth/signin" , authController.signin );
+router.post("/auth/signin" , authController.signin );
 
 
 module.exports = router
