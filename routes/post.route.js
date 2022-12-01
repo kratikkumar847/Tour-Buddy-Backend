@@ -11,4 +11,7 @@ router.post("/post/add" ,[ JWTAuth.verifyToken ], postController.createPost );
 router.get("/post" ,[ JWTAuth.verifyToken ], postController.getAllPost );
 
 
+router.get("/post/user" ,[ JWTAuth.verifyToken ], postController.getAllPostByUserID );
+
+
 module.exports = router

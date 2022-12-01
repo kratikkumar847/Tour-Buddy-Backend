@@ -7,5 +7,6 @@ const   middleware = require("../middlewares/jwtToken");
 router.get("/user/:userID" , [middleware.verifyToken] , userController.getUserByID );
 
 
+
 module.exports = router;
 
