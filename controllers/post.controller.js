@@ -23,6 +23,9 @@ exports.createPost = async (req, res) => {
         */
 
         createdPost.creator = user.userID;
+        user.postCreated.push(createdPost._id);
+
+        
 
         const newPost = {
             postID: createdPost._id,
@@ -33,10 +36,11 @@ exports.createPost = async (req, res) => {
             createdAt: createdPost.createdAt,
             updatedAt: createdPost.updatedAt
         }
-
+        await user.save();
         await createdPost.save();
 
         res.status(201).send({
+            success : true,
             status: 201,
             message: `${createdPost._id} , Added Successully !`,
             post: newPost
@@ -46,6 +50,7 @@ exports.createPost = async (req, res) => {
 
         console.log(err);
         res.status(500).send({
+            success : false,
             message: "Internal Server Error , while Adding POST !"
         })
     }
@@ -62,10 +67,11 @@ exports.getAllPost = async (req, res) => {
             userID: req.userID
         });
 
+        // console.log(user);
 
         const post = await Post.find();
 
-        console.log(post);
+        // console.log(post);
 
         const postsDetails = {
             postID: post._id,
@@ -78,6 +84,7 @@ exports.getAllPost = async (req, res) => {
         }
 
         return res.status(200).send({
+            success : true,
             message: `${user.userID} , Fetched All Posts !`,
             post: response.postResponse(post)
         });
@@ -85,6 +92,7 @@ exports.getAllPost = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).send({
+            success : false,
             message: `Error in Fetching Posts`,
         });
     }

@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const authController = require("../controllers/auth.controller");
-const   middleware = require("../middlewares/signupMiddleware");
+const userController = require("../controllers/user.controller");
+const   middleware = require("../middlewares/jwtToken");
 
 
-/** signup - POST  */
-router.post("/auth/signup" ,[ middleware.signupMiddleware ], authController.signup );
-
-/** signin - POST  */
-router.post("/auth/signin" , authController.signin );
+router.get("/user/:userID" , [middleware.verifyToken] , userController.getUserByID );
 
 
-module.exports = router
+module.exports = router;
+

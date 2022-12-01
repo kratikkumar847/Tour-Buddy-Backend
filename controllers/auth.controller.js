@@ -3,26 +3,26 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 /** Registration Controller  for the User  */
 
-exports.signup = async ( req, res ) => {
+exports.signup = async (req, res) => {
 
     const UserDetailsStoredInDB = {
         name: req.body.name,
         userID: req.body.userID,
-        email: req.body.email, 
+        email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        
+
     }
-    
-     /**
-     * Create the New User and Added to the database
-     */
-      try {
+
+    /**
+    * Create the New User and Added to the database
+    */
+    try {
         const createdUser = await User.create(UserDetailsStoredInDB);
 
-         /**
-         *  response
-         */
-          const ResponseOfNewUser = {
+        /**
+        *  response
+        */
+        const ResponseOfNewUser = {
             name: createdUser.name,
             userID: createdUser.userID,
             email: createdUser.email,
@@ -30,15 +30,17 @@ exports.signup = async ( req, res ) => {
             updatedAt: createdUser.updatedAt
         }
 
-        res.status(201).send({
-            status : 201,
+        return res.status(201).send({
+            success: true,
+            status: 201,
             message: `${createdUser.name} , Added Successully !`,
             user: ResponseOfNewUser
         });
     } catch (err) {
 
-        console.log( err.message);
-        res.status(500).send({
+        console.log(err.message);
+        return res.status(500).send({
+            success: false,
             message: "Internal Server Error ,when Insert User !"
         })
     }
@@ -49,7 +51,7 @@ exports.signup = async ( req, res ) => {
 /**
  * signin Controller
  */
- exports.signin = async (req, res) => {
+exports.signin = async (req, res) => {
 
     //Search the user if it exists 
     try {
@@ -57,7 +59,7 @@ exports.signup = async ( req, res ) => {
     } catch (err) {
         console.log(err.message);
     }
-    
+
     if (user == null) {
         return res.status(400).send("User ID Doesn't Exist !")
     }
@@ -76,8 +78,9 @@ exports.signup = async ( req, res ) => {
     });
 
     //Send the response back 
-    res.status(200).send({
-        status : 200,
+    return res.status(200).send({
+        success: true,
+        status: 200,
         message: `${user.userID} login Successfully !`,
         user: {
             name: user.name,
@@ -90,7 +93,35 @@ exports.signup = async ( req, res ) => {
 };
 
 
+/**
+ * get user details Controller
+ */
 
-// export.userDetails = async (req,res) =>{
+exports.getUserByID = async (req, res) => {
 
-// }
+    try {
+        const user = await User.findOne({ userID: req.params.userID })
+
+        if (!user) {
+            return res.status( 200 ).send({
+                success : true,
+                message : `No user Found with userID : ${ user.userID }`
+            })
+        }
+
+        return res.status(200).send({
+            success: true,
+            message: `${user.userID} , Fetched the user !`,
+            user: user
+        })
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: `Internal Server Error , while Fetching user By ID  `,
+
+        })
+
+    }
+}

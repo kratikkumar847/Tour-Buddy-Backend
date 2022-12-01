@@ -30,6 +30,11 @@ const userSchema = new mongoose.Schema({
     member : {
         type : Array,
         default :[]
+    },
+
+    postCreated :{
+        type: [mongoose.SchemaTypes.ObjectId],
+        ref: "Post" /* Collection Name */
     }
 
 });
