@@ -105,7 +105,7 @@ exports.getAllPostByUserID = async (req, res) => {
 
 
         const postByUser = await Post.find({
-            creator : req.userID
+            creator: req.userID
         });
 
         res.status(200).send({
@@ -124,9 +124,42 @@ exports.getAllPostByUserID = async (req, res) => {
 
 }
 
-exports.addMember = async ( req , res ) => {
+exports.addMember = async (req, res) => {
 
-    try{
-        const user = await Post
+    try {
+        const post = await Post.findById(req.params.id);
+        console.log(post);
+        if (!post.member.includes(req.body.userID)) {
+            await post.updateOne({ $push: { member: req.body.userID } }).exec();
+
+            await post.save();
+           console.log( "len : ", post.member.length );
+           
+         if(post.member.length < post.noOfPeople){
+           return res.status(200).json({
+                success: true,
+                message: "Member Added !",
+                post: response.postResponseByID( post )
+                })
+            }
+            else{
+                return res.status(500).json({
+                    success: false,
+                    message: "Number of people are full",
+                    post: response.postResponseByID( post )
+                    })
+            }
+        }
+        else {
+            console.log( "len : ", post.member.length );
+            return res.status(500).json({
+                success: true,
+                message: "Member is already present !"
+            });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
     }
 }
