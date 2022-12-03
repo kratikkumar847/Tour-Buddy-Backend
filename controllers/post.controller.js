@@ -108,9 +108,10 @@ exports.getAllPostByUserID = async (req, res) => {
             creator: req.userID
         });
 
-        res.status(200).send({
+         return res.status(200).send({
             success: true,
             message: "Fetched all post !",
+            TotalPost: postByUser.length,
             post: postByUser
         })
 
@@ -163,3 +164,39 @@ exports.addMember = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+/* Delete a post */
+exports.deletePost = async (req ,res) =>{
+   
+    try{
+       
+       const post = await Post.findById(req.params.id);
+       console.log("post : ", post);
+       if(!post) {
+            return  res.status(403).json({
+                success : true,
+                message : "Post does not found !"
+             })
+       }
+       if(post.creator === req.userID){
+          console.log("POST.UserID :", post.creator);
+          // console.log("req.body.userID :", req.body.userID);
+          await post.deleteOne();
+          res.status(200).json({
+             success : true,
+             message : "The user has been Deleted, Successfully !"
+          })
+       }else{
+        console.log("POST.UserID :","error");
+          res.send(403).json({
+             sucess : false,
+             message : "You can Delete only your post !"
+          })
+       }
+       
+    }
+    catch(err){
+       console.log(err);
+       res.status(500).json(err);
+    }
+};

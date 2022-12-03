@@ -15,5 +15,7 @@ router.get("/post/user" ,[ JWTAuth.verifyToken ], postController.getAllPostByUse
 
 router.put("/:id/member/add" ,[ JWTAuth.verifyToken ], postController.addMember );
 
+router.delete("/post/:id" ,[ JWTAuth.verifyToken ], postController.deletePost );
+
 
 module.exports = router
