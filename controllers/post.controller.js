@@ -90,8 +90,6 @@ exports.getAllPost = async (req, res) => {
 exports.getAllPostByUserID = async (req, res) => {
 
     try {
-
-
         const postByUser = await Post.find({
             creator: req.userID
         });

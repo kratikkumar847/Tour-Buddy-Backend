@@ -24,10 +24,12 @@ mongoose.connection.on("connected", (err, res) => {
   console.log("mongoose is connected")
 })
 
+
 const authRouter = require('./routes/auth.route');
 const userRouter = require('./routes/user.route');
 const postRouter = require('./routes/post.route');
 const homeRouter = require('./routes/home.route');
+
 
 app.use( '/api' , authRouter );
 app.use( '/api' , userRouter );
