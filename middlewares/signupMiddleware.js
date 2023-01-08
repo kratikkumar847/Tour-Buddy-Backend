@@ -29,7 +29,7 @@
          return res.status(400).send( "UserID already exists" )
      }
 
-    /*
+    /*  
         validate the Email if it Exists
     */
      if( !req.body.email ){

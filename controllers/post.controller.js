@@ -54,15 +54,11 @@ exports.createPost = async (req, res) => {
             message: "Internal Server Error , while Adding POST !"
         })
     }
-
-
 }
 
-/* API to fetch all the Tickets */
+/* API to fetch all the Posts */
 exports.getAllPost = async (req, res) => {
     try {
-
-
         const user = await User.findOne({
             userID: req.userID
         });
@@ -73,15 +69,7 @@ exports.getAllPost = async (req, res) => {
 
         // console.log(post);
 
-        const postsDetails = {
-            postID: post._id,
-            creator: post.creator,
-            description: post.description,
-            destination: post.destination,
-            noOfPeople: post.noOfPeople,
-            createdAt: post.createdAt,
-            updatedAt: post.updatedAt
-        }
+       
 
         return res.status(200).send({
             success: true,
@@ -131,12 +119,13 @@ exports.addMember = async (req, res) => {
         const post = await Post.findById(req.params.id);
         console.log(post);
         if (!post.member.includes(req.body.userID)) {
+            
+           
+         if(post.member.length < post.noOfPeople){
             await post.updateOne({ $push: { member: req.body.userID } }).exec();
 
             await post.save();
            console.log( "len : ", post.member.length );
-           
-         if(post.member.length < post.noOfPeople){
            return res.status(200).json({
                 success: true,
                 message: "Member Added !",
