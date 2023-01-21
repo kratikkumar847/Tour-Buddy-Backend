@@ -72,7 +72,7 @@ exports.signin = async (req, res) => {
     }
 
     //** Successfull login */
-    //I need to generate access token now
+    //need to generate access token now
     const token = jwt.sign({ id: user.userID }, process.env.SECRET, {
         expiresIn: '2h'
     });

@@ -107,9 +107,8 @@ exports.getAllPostByUserID = async (req, res) => {
             message: `Internal Server Error , while Fetching Post by userID !`
         })
     }
-
-
 }
+
 
 exports.addMember = async (req, res) => {
 
@@ -151,6 +150,8 @@ exports.addMember = async (req, res) => {
         return res.status(500).json(err);
     }
 }
+
+
 
 /* Delete a post */
 exports.deletePost = async (req ,res) =>{
